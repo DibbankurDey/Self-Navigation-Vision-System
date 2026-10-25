@@ -1,3 +1,27 @@
+import os
+import sys
+
+# If run by Streamlit (Cloud or CLI), route directly to the Web Dashboard
+is_streamlit = False
+try:
+    import streamlit as st
+    from streamlit.runtime.scriptrunner import get_script_run_ctx
+    if get_script_run_ctx() is not None:
+        is_streamlit = True
+except Exception:
+    pass
+
+if not is_streamlit and any("streamlit" in arg.lower() for arg in sys.argv):
+    is_streamlit = True
+
+if is_streamlit:
+    import runpy
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    dashboard_app = os.path.join(current_dir, "dashboard", "app.py")
+    runpy.run_path(dashboard_app, run_name="__main__")
+    sys.exit(0)
+
+# Otherwise, run local desktop OpenCV script
 from navigation.voice_assistant import speak
 from vision.object_detection import detect_objects
 from vision.distance_estimator import estimate_distance

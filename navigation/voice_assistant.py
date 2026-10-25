@@ -1,7 +1,11 @@
+engine = None
 try:
     import pyttsx3
-    engine = pyttsx3.init()
-except Exception:
+    try:
+        engine = pyttsx3.init()
+    except Exception:
+        engine = None
+except (ImportError, ModuleNotFoundError, Exception):
     engine = None
 
 def speak(text):
