@@ -1,0 +1,3 @@
+espeak
+ffmpeg
+libgl1
